@@ -12,22 +12,21 @@ import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity()
 {
+    // Private Instance Members
     private lateinit var database: DatabaseReference
-
-
+    private lateinit var TVShows: MutableList<TVShow>
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Write a message to the database
-        //val database = Firebase.database
-
+        // Initializing
         database = Firebase.database.reference
+        TVShows = mutableListOf<TVShow>()
 
-        writeNewTVShow("0", "House of the Dragon","HBO")
-        writeNewTVShow("1", "Andor","Disney")
+        //writeNewTVShow("0", "House of the Dragon","HBO")
+        //writeNewTVShow("1", "Andor","Disney")
 
         addTVShowEventListener(database)
     }
@@ -42,8 +41,38 @@ class MainActivity : AppCompatActivity()
         val TVShowListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot)
             {
-                val tvShow = dataSnapshot.getValue()
-                Log.i("tvShow-value", "TVShow is: ${tvShow.toString()}")
+                TVShows.clear()
+                val tvShowDB = dataSnapshot.child("TVShows").children
+
+                for(tvShow in tvShowDB)
+                {
+                    var newShow = tvShow.getValue(TVShow::class.java)
+
+                    if (newShow != null) {
+                        TVShows.add(newShow)
+                    }
+                }
+
+                for(tvShow in TVShows)
+                {
+                    Log.i("child", "tvShow: $tvShow")
+                }
+
+
+
+
+               // TVShows.clear()
+
+                /*
+                for(tvShow in tvShowDB)
+                {
+                    TVShows.add(tvShow)
+                }
+*/
+
+               // Log.i("tvShowDB", "TVShowDB: $tvShowDB")
+                //Log.i("tvShowList", "TVShowList: $TVShows")
+
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
