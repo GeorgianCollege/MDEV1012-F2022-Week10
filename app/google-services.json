@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "995267948789",
+    "firebase_url": "https://mdev1012-f2022-default-rtdb.firebaseio.com",
+    "project_id": "mdev1012-f2022",
+    "storage_bucket": "mdev1012-f2022.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:995267948789:android:cf699f929c3abdf59ed5bc",
+        "android_client_info": {
+          "package_name": "ca.georgiancollege.mdev1012_f2022_week10"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "995267948789-0p6vajk8tfi8dg00m6j7g37jcf5fo106.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQP5kcGXgZadjxg5Bhs0Q4r6Y6ItVuKLc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "995267948789-0p6vajk8tfi8dg00m6j7g37jcf5fo106.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
