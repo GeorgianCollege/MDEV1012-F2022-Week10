@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity()
     // Private Instance Members
     private lateinit var database: DatabaseReference
     private lateinit var TVShows: MutableList<TVShow>
+    private lateinit var tvShowsAdapter: TVShowsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
