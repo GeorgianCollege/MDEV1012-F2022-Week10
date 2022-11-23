@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity()
     {
         addTVShowFAB = findViewById(R.id.add_TV_Show_FAB)
         addTVShowFAB.setOnClickListener{
-            // show TV Show Dialog
+            showCreateTVShowDialog(AlertAction.ADD, null, null)
         }
     }
 
