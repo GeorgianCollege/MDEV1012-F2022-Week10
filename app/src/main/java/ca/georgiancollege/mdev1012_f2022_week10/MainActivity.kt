@@ -33,6 +33,10 @@ class MainActivity : AppCompatActivity()
         TVShows = mutableListOf<TVShow>()
         tvShowsAdapter = TVShowsAdapter(TVShows)
 
+        tvShowsAdapter.onTVShowClick = { tvShow, position ->
+            showCreateTVShowDialog(AlertAction.UPDATE, tvShow, position)
+        }
+
         initializeRecyclerView()
         initializeFAB()
 
