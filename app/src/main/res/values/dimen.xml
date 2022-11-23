@@ -5,4 +5,6 @@
     <dimen name="CellMargin">5dp</dimen>
     <dimen name="CellTextSize">24sp</dimen>
     <dimen name="dialog_height">120dp</dimen>
+    <dimen name="FAB_margin_right">30dp</dimen>
+    <dimen name="FAB_margin_bottom">60dp</dimen>
 </resources>
