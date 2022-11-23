@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/First_Recycler_View"
+        android:id="@+id/TVShow_Recycler_View"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_marginStart="10dp"

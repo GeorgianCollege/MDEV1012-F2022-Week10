@@ -3,6 +3,8 @@ package ca.georgiancollege.mdev1012_f2022_week10
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -25,11 +27,18 @@ class MainActivity : AppCompatActivity()
         // Initializing
         database = Firebase.database.reference
         TVShows = mutableListOf<TVShow>()
+        tvShowsAdapter = TVShowsAdapter(TVShows)
 
-        //writeNewTVShow("0", "House of the Dragon","HBO")
-        //writeNewTVShow("1", "Andor","Disney")
+        initializeRecyclerView()
 
         addTVShowEventListener(database)
+    }
+
+    private fun initializeRecyclerView()
+    {
+        val recyclerView: RecyclerView = findViewById(R.id.TVShow_Recycler_View)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = tvShowsAdapter
     }
 
     fun writeNewTVShow(id: String, title: String, studio: String) {
@@ -51,28 +60,15 @@ class MainActivity : AppCompatActivity()
 
                     if (newShow != null) {
                         TVShows.add(newShow)
+                        tvShowsAdapter.notifyDataSetChanged()
                     }
                 }
 
+                // output to Logcat for testing / debugging
                 for(tvShow in TVShows)
                 {
                     Log.i("child", "tvShow: $tvShow")
                 }
-
-
-
-
-               // TVShows.clear()
-
-                /*
-                for(tvShow in tvShowDB)
-                {
-                    TVShows.add(tvShow)
-                }
-*/
-
-               // Log.i("tvShowDB", "TVShowDB: $tvShowDB")
-                //Log.i("tvShowList", "TVShowList: $TVShows")
 
             }
 

@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">COMP3025-F2022-Week9</string>
+    <string name="app_name">MDEV1012-F2022-Week11</string>
     <string name="title_text">Title</string>
-    <string name="subtitle_text">subtitle</string>
+    <string name="studio_text">studio</string>
     <string name="dialog_title">Add a new TV Show</string>
     <string name="add_tv_show">Add TV Show</string>
     <string name="cancel">Cancel</string>

@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/CellMargin"
-            android:text="@string/subtitle_text"
+            android:text="@string/studio_text"
             android:textColor="@color/subTitle_blue" />
     </LinearLayout>
 

@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class TVShowsAdapter(private val dataSet: MutableList<TVShow>): RecyclerView.Adapter<TVShowsAdapter.ViewHolder>()
 {
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    // For Each row we define a Cell
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
     {
         val title: TextView
         val studio: TextView
