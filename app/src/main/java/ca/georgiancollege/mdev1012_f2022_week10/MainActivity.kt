@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -66,26 +67,17 @@ class MainActivity : AppCompatActivity()
 
     fun writeNewTVShow(tvShow: TVShow)
     {
-        var id = TVShows.size.toString() //  generate new ID
-        database.child("TVShows").child(id).setValue(tvShow)
+        database.child("TVShows").child(tvShow.id.toString()).setValue(tvShow)
     }
 
-    fun updateTVShow(id: String, tvShow: TVShow)
+    fun updateTVShow(tvShow: TVShow)
     {
-        database.child("TVShows").child(id).setValue(tvShow)
+        database.child("TVShows").child(tvShow.id.toString()).setValue(tvShow)
     }
 
-    fun deleteTVShow(id: String, tvShow: TVShow?)
+    fun deleteTVShow(tvShow: TVShow?)
     {
-        TVShows.remove(tvShow);
-        var tempList = this.TVShows.toMutableList()
-        database.child("TVShows").removeValue()
-        TVShows.clear()
-        for(item in tempList)
-        {
-            writeNewTVShow(item)
-        }
-        tvShowsAdapter.notifyDataSetChanged()
+        database.child("TVShows").child(tvShow?.id.toString()).removeValue()
     }
 
     private fun showCreateTVShowDialog(alertAction: AlertAction, tvShow: TVShow?, position: Int?)
@@ -105,7 +97,7 @@ class MainActivity : AppCompatActivity()
                 positiveButtonTitle = getString(R.string.update_tv_show)
             }
             AlertAction.DELETE -> {
-                dialogTitle = "Delete TV Show"
+                dialogTitle = ""
                 positiveButtonTitle = "Delete TV Show"
             }
         }
@@ -125,7 +117,10 @@ class MainActivity : AppCompatActivity()
             AlertAction.ADD -> {
                 builder.setPositiveButton(positiveButtonTitle) { dialog, _ ->
                     dialog.dismiss()
-                    val newTVShow = TVShow(tvShowTitleEditText.text.toString(),
+                    val firstCharTitle = tvShowTitleEditText.text.toString().substring(0, 1)
+                    val firstCharStudio = studioTitleEditText.text.toString().substring(0, 1)
+                    val id = firstCharTitle + firstCharStudio + System.currentTimeMillis().toString()
+                    val newTVShow = TVShow(id, tvShowTitleEditText.text.toString(),
                                            studioTitleEditText.text.toString())
                     writeNewTVShow(newTVShow)
                 }
@@ -139,19 +134,20 @@ class MainActivity : AppCompatActivity()
                 }
                 builder.setPositiveButton(positiveButtonTitle) { dialog, _ ->
                     dialog.dismiss()
-                    val newTVShow = TVShow(tvShowTitleEditText.text.toString(),
+                    val updatedTVShow = TVShow(tvShow?.id, tvShowTitleEditText.text.toString(),
                         studioTitleEditText.text.toString())
-                    updateTVShow(position.toString(),newTVShow)
+                    updateTVShow(updatedTVShow)
                 }
             }
             AlertAction.DELETE -> {
-                tvShowTitleText.setText("Are you Sure?")
+                tvShowTitleText.setText("Delete" + tvShow?.title)
+                tvShowTitleText.setTextColor(ContextCompat.getColor(view.context, R.color.red))
+                studioTitleText.setText("Are you Sure?")
                 tvShowTitleEditText.isVisible = false
                 studioTitleEditText.isVisible = false
-                studioTitleText.isVisible = false
                 builder.setPositiveButton(positiveButtonTitle) { dialog, _ ->
                     dialog.dismiss()
-                    deleteTVShow(position.toString(), tvShow)
+                    deleteTVShow(tvShow)
                 }
                 builder.setNegativeButton(negativeButtonTitle) { dialog, _ ->
                     dialog.cancel()
@@ -179,13 +175,6 @@ class MainActivity : AppCompatActivity()
                         tvShowsAdapter.notifyDataSetChanged()
                     }
                 }
-
-                // output to Logcat for testing / debugging
-                for(tvShow in TVShows)
-                {
-                    Log.i("child", "tvShow: $tvShow")
-                }
-
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
