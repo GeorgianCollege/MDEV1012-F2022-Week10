@@ -27,7 +27,7 @@ class TVShowsAdapter(private val dataSet: MutableList<TVShow>):
                 onTVShowClick?.invoke(dataSet[adapterPosition], adapterPosition)
             }
 
-            view.setOnTouchListener(object : OnSwipeTouchListener(view.context){
+            view.setOnTouchListener(object : OnCustomTouchListener(view.context){
                 override fun onSwipeLeft() {
                     super.onSwipeLeft()
                     onTVShowSwipeLeft?.invoke(dataSet[adapterPosition], adapterPosition)
