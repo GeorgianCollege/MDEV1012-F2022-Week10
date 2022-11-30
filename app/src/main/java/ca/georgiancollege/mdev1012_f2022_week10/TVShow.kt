@@ -5,6 +5,7 @@ import com.google.firebase.database.IgnoreExtraProperties
 
 @IgnoreExtraProperties
 data class TVShow(
+    var id: String? = "",
     var title: String? = "",
     var studio: String? = ""
 ){

@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -35,6 +37,10 @@ class MainActivity : AppCompatActivity()
 
         tvShowsAdapter.onTVShowClick = { tvShow, position ->
             showCreateTVShowDialog(AlertAction.UPDATE, tvShow, position)
+        }
+
+        tvShowsAdapter.onTVShowSwipeLeft = { tvShow, position ->
+            showCreateTVShowDialog(AlertAction.DELETE, tvShow, position)
         }
 
         initializeRecyclerView()
@@ -69,10 +75,24 @@ class MainActivity : AppCompatActivity()
         database.child("TVShows").child(id).setValue(tvShow)
     }
 
+    fun deleteTVShow(id: String, tvShow: TVShow?)
+    {
+        TVShows.remove(tvShow);
+        var tempList = this.TVShows.toMutableList()
+        database.child("TVShows").removeValue()
+        TVShows.clear()
+        for(item in tempList)
+        {
+            writeNewTVShow(item)
+        }
+        tvShowsAdapter.notifyDataSetChanged()
+    }
+
     private fun showCreateTVShowDialog(alertAction: AlertAction, tvShow: TVShow?, position: Int?)
     {
         var dialogTitle: String = ""
         var positiveButtonTitle: String = ""
+        var negativeButtonTitle: String = "Cancel"
 
         when(alertAction)
         {
@@ -84,6 +104,10 @@ class MainActivity : AppCompatActivity()
                 dialogTitle = getString(R.string.update_dialog_title)
                 positiveButtonTitle = getString(R.string.update_tv_show)
             }
+            AlertAction.DELETE -> {
+                dialogTitle = "Delete TV Show"
+                positiveButtonTitle = "Delete TV Show"
+            }
         }
 
         val builder = AlertDialog.Builder(this)
@@ -91,7 +115,9 @@ class MainActivity : AppCompatActivity()
         builder.setTitle(dialogTitle)
         builder.setView(view)
 
+        val tvShowTitleText = view.findViewById<TextView>(R.id.tv_show_title)
         val tvShowTitleEditText = view.findViewById<EditText>(R.id.TV_Show_Title_EditText)
+        val studioTitleText = view.findViewById<TextView>(R.id.Studio_Title)
         val studioTitleEditText = view.findViewById<EditText>(R.id.Studio_Name_EditText)
 
         when(alertAction)
@@ -103,6 +129,7 @@ class MainActivity : AppCompatActivity()
                                            studioTitleEditText.text.toString())
                     writeNewTVShow(newTVShow)
                 }
+
             }
             AlertAction.UPDATE -> {
                 if(tvShow != null)
@@ -117,6 +144,20 @@ class MainActivity : AppCompatActivity()
                     updateTVShow(position.toString(),newTVShow)
                 }
             }
+            AlertAction.DELETE -> {
+                tvShowTitleText.setText("Are you Sure?")
+                tvShowTitleEditText.isVisible = false
+                studioTitleEditText.isVisible = false
+                studioTitleText.isVisible = false
+                builder.setPositiveButton(positiveButtonTitle) { dialog, _ ->
+                    dialog.dismiss()
+                    deleteTVShow(position.toString(), tvShow)
+                }
+                builder.setNegativeButton(negativeButtonTitle) { dialog, _ ->
+                    dialog.cancel()
+                }
+            }
+
         }
         builder.create().show()
     }

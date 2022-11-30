@@ -10,6 +10,7 @@ class TVShowsAdapter(private val dataSet: MutableList<TVShow>):
     RecyclerView.Adapter<TVShowsAdapter.ViewHolder>()
 {
     var onTVShowClick: ((TVShow, position: Int) -> Unit)? = null
+    var onTVShowSwipeLeft: ((TVShow, position: Int) -> Unit)? = null
 
     // For Each row we define a Cell
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
@@ -17,13 +18,21 @@ class TVShowsAdapter(private val dataSet: MutableList<TVShow>):
         val title: TextView
         val studio: TextView
 
-        init{
+        init
+        {
             title = view.findViewById(R.id.tv_show_title)
             studio = view.findViewById(R.id.studio)
 
             view.setOnClickListener{
                 onTVShowClick?.invoke(dataSet[adapterPosition], adapterPosition)
             }
+
+            view.setOnTouchListener(object : OnSwipeTouchListener(view.context){
+                override fun onSwipeLeft() {
+                    super.onSwipeLeft()
+                    onTVShowSwipeLeft?.invoke(dataSet[adapterPosition], adapterPosition)
+                }
+            })
         }
     }
 
@@ -42,3 +51,5 @@ class TVShowsAdapter(private val dataSet: MutableList<TVShow>):
         return dataSet.size
     }
 }
+
+
