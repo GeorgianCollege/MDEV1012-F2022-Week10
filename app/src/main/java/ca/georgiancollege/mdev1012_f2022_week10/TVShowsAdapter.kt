@@ -23,14 +23,15 @@ class TVShowsAdapter(private val dataSet: MutableList<TVShow>):
             title = view.findViewById(R.id.tv_show_title)
             studio = view.findViewById(R.id.studio)
 
-            view.setOnClickListener{
-                onTVShowClick?.invoke(dataSet[adapterPosition], adapterPosition)
-            }
-
             view.setOnTouchListener(object : OnCustomTouchListener(view.context){
                 override fun onSwipeLeft() {
                     super.onSwipeLeft()
                     onTVShowSwipeLeft?.invoke(dataSet[adapterPosition], adapterPosition)
+                }
+
+                override fun onClick() {
+                    super.onClick()
+                    onTVShowClick?.invoke(dataSet[adapterPosition], adapterPosition)
                 }
             })
         }
