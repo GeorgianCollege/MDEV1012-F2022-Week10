@@ -12,6 +12,7 @@ data class TVShow(
     @Exclude
     fun toMap(): Map<String, Any?> {
         return mapOf(
+            "id" to id,
             "title" to title,
             "studio" to studio
         )
